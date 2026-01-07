@@ -3,7 +3,7 @@
   "version": "9.7.0",
   "description": "A simple dapp used in MetaMask e2e tests.",
   "engines": {
-    "node": ">= 18.0.0"
+    "node": "^18.0.0 || ^20.0.0"
   },
   "scripts": {
     "setup": "yarn install && yarn allow-scripts",
@@ -37,7 +37,6 @@
   "resolutions": {
     "elliptic": "^6.6.1"
   },
-  "dependencies": {},
   "devDependencies": {
     "@lavamoat/allow-scripts": "^2.5.1",
     "@lavamoat/preinstall-always-fail": "^2.0.0",
