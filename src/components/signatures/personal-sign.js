@@ -12,6 +12,16 @@ export function personalSignComponent(parentContainer) {
             Personal Sign
           </h4>
 
+          <div class="form-group mb-3">
+            <label for="personalSignMessage">Message to Sign:</label>
+            <textarea
+              class="form-control"
+              id="personalSignMessage"
+              rows="3"
+              placeholder="Enter your message here..."
+            >Example \`personal_sign\` message</textarea>
+          </div>
+
           <button
             class="btn btn-primary btn-lg btn-block mb-3"
             id="personalSign"
@@ -46,6 +56,7 @@ export function personalSignComponent(parentContainer) {
   );
 
   const personalSign = document.getElementById('personalSign');
+  const personalSignMessage = document.getElementById('personalSignMessage');
   const personalSignResult = document.getElementById('personalSignResult');
   const personalSignVerify = document.getElementById('personalSignVerify');
   const personalSignVerifySigUtilResult = document.getElementById(
@@ -71,7 +82,7 @@ export function personalSignComponent(parentContainer) {
    * Personal Sign
    */
   personalSign.onclick = async () => {
-    const exampleMessage = 'Example `personal_sign` message';
+    const exampleMessage = personalSignMessage.value;
     try {
       const from = globalContext.accounts[0];
       const msg = `0x${Buffer.from(exampleMessage, 'utf8').toString('hex')}`;
@@ -91,7 +102,7 @@ export function personalSignComponent(parentContainer) {
    * Personal Sign Verify
    */
   personalSignVerify.onclick = async () => {
-    const exampleMessage = 'Example `personal_sign` message';
+    const exampleMessage = personalSignMessage.value;
     try {
       const from = globalContext.accounts[0];
       const msg = `0x${Buffer.from(exampleMessage, 'utf8').toString('hex')}`;
