@@ -3,11 +3,5 @@
   "devCommand": "yarn start",
   "installCommand": "yarn install",
   "framework": null,
-  "outputDirectory": "dist",
-  "functions": {
-    "node": {
-      "runtime": "nodejs20.x"
-    }
-  }
+  "outputDirectory": "dist"
 }
-
