@@ -50,6 +50,30 @@ export function personalSignComponent(parentContainer) {
             personal_ecRecover result:
             <span id="personalSignVerifyECRecoverResult"></span>
           </p>
+
+          <hr class="my-4">
+
+          <h5>Hash Message</h5>
+          <div class="form-group mb-3">
+            <label for="hashMessageInput">Message to Hash:</label>
+            <textarea
+              class="form-control"
+              id="hashMessageInput"
+              rows="3"
+              placeholder="Enter your message to hash..."
+            >Example message to hash</textarea>
+          </div>
+
+          <button
+            class="btn btn-secondary btn-lg btn-block mb-3"
+            id="hashMessageButton"
+          >
+            Hash Message
+          </button>
+
+          <p class="info-text alert alert-info">
+            Hash Result: <span id="hashMessageResult"></span>
+          </p>
         </div>
       </div>
     </div>`,
@@ -65,6 +89,9 @@ export function personalSignComponent(parentContainer) {
   const personalSignVerifyECRecoverResult = document.getElementById(
     'personalSignVerifyECRecoverResult',
   );
+  const hashMessageInput = document.getElementById('hashMessageInput');
+  const hashMessageButton = document.getElementById('hashMessageButton');
+  const hashMessageResult = document.getElementById('hashMessageResult');
 
   document.addEventListener('globalConnectionChange', function (e) {
     if (e.detail.connected) {
@@ -136,6 +163,34 @@ export function personalSignComponent(parentContainer) {
       console.error(err);
       personalSignVerifySigUtilResult.innerHTML = `Error: ${err.message}`;
       personalSignVerifyECRecoverResult.innerHTML = `Error: ${err.message}`;
+    }
+  };
+
+  /**
+   * Hash Message (Ethereum Signed Message format, compatible with ethers.hashMessage)
+   */
+  hashMessageButton.onclick = async () => {
+    const message = hashMessageInput.value;
+    try {
+      // Create Ethereum Signed Message format: "\x19Ethereum Signed Message:\n" + len(message) + message
+      const messageBytes = Buffer.from(message, 'utf8');
+      const messageLength = messageBytes.length.toString();
+      const prefix = `\x19Ethereum Signed Message:\n${messageLength}`;
+      const prefixBytes = Buffer.from(prefix, 'utf8');
+
+      // Concatenate prefix + message
+      const fullMessage = Buffer.concat([prefixBytes, messageBytes]);
+      const fullMessageHex = `0x${fullMessage.toString('hex')}`;
+
+      // Hash the full message
+      const hash = await globalContext.provider.request({
+        method: 'web3_sha3',
+        params: [fullMessageHex],
+      });
+      hashMessageResult.innerHTML = hash;
+    } catch (err) {
+      console.error(err);
+      hashMessageResult.innerHTML = `Error: ${err.message}`;
     }
   };
 }
